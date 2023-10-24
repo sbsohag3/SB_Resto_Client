@@ -5,6 +5,7 @@ import {
   LoadCanvasTemplate,
   validateCaptcha,
 } from 'react-simple-captcha';
+import { FcGoogle } from 'react-icons/fc';
 import { AuthContext } from '../../providers/AuthProviders';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -12,10 +13,18 @@ import Swal from 'sweetalert2';
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
-  const { signIn } = useContext(AuthContext);
-  const navigate = useNavigate()
-  const location = useLocation()
-  const from = location.state?.form?.pathname || '/'
+  const { signIn, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.form?.pathname || '/';
+
+  const handleGoogleLogIn = () => {
+    googleLogin().then(result => {
+      const loggedInUser = result.user;
+      console.log(loggedInUser);
+      navigate(from, { replace: true });
+    });
+  };
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -35,7 +44,7 @@ export default function Login() {
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate(from, {replace: true})
+      navigate(from, { replace: true });
       // if (signIn === true || signIn === false) {
       //   Swal.fire({
       //     icon: 'success',
@@ -136,6 +145,14 @@ export default function Login() {
                   </Link>
                 </small>
               </p>
+              <div className="divider">OR</div>
+              <button
+                onClick={() => handleGoogleLogIn()}
+                className="btn btn-warning rounded-none normal-case"
+              >
+                <FcGoogle className="mx-1 text-2xl " />
+                Continue With Google
+              </button>
             </div>
           </form>
         </div>

@@ -1,11 +1,13 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from 'react-router-dom';
 import { BsCart3 } from 'react-icons/bs';
 import { FaCalendarAlt, FaHome } from 'react-icons/fa';
 import { GiWallet, GiHamburgerMenu, GiShoppingBag } from 'react-icons/gi';
 import { TbCalendarExclamation } from 'react-icons/tb';
 import { MdRateReview, MdContactMail } from 'react-icons/md';
+import useCart from '../hooks/useCart';
 
 export default function Dashboard() {
+  const [cart] = useCart();
   return (
     <div className="drawer lg:drawer-open ">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -43,6 +45,7 @@ export default function Dashboard() {
           <li>
             <NavLink to="/dashboard/mycart">
               <BsCart3 /> My Cart
+              <span className='badge gap-2 badge-secondary'>{cart?.length || 0}+</span>
             </NavLink>
           </li>
           <li>

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import {  NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../../providers/AuthProviders';
 import userLogo from '../../../../assets/others/user_logo.png';
 import { BsCart3 } from 'react-icons/bs';
@@ -43,9 +43,12 @@ const Navbar = () => {
       </li>
 
       {user ? (
-        <>
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost  avatar">
+        <div className="flex flex-col justify-center mt-1">
+          <div className="dropdown dropdown-end ">
+            <label
+              tabIndex={0}
+              className="transition hover:-translate hover:scale-125  duration-300  cursor-pointer avatar"
+            >
               <div className="w-6 rounded-full">
                 <img src={user?.photoURL || userLogo} alt="" />
               </div>
@@ -65,7 +68,7 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <li>

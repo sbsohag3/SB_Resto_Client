@@ -1,10 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import signupImg from '../../assets/others/authentication2.png';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProviders';
 import Swal from 'sweetalert2';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function SignUp() {
   const {
@@ -13,8 +14,18 @@ export default function SignUp() {
     reset,
     formState: { errors },
   } = useForm();
-  const { createUser, updateUserProfile } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const { createUser, updateUserProfile, googleLogin } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.form?.pathname || '/';
+  const handleGoogleLogIn = () => {
+    googleLogin().then(result => {
+      const loggedInUser = result.user;
+      console.log(loggedInUser);
+      navigate(from, { replace: true });
+    });
+  };
 
   const onSubmit = data => {
     console.log(data);
@@ -23,14 +34,14 @@ export default function SignUp() {
       console.log(loggedUser);
       updateUserProfile(data.name, data.photoUrl).then(() => {
         console.log('user profile info updated successfully');
-        reset()
+        reset();
         Swal.fire({
           icon: 'success',
           title: 'User Login Successful',
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate('/')
+        navigate('/');
       });
     });
   };
@@ -158,6 +169,14 @@ export default function SignUp() {
                   </Link>
                 </small>
               </p>
+              <div className="divider">OR</div>
+              <button
+                onClick={() => handleGoogleLogIn()}
+                className="btn btn-warning rounded-none normal-case"
+              >
+                <FcGoogle className="mx-1 text-2xl " />
+                Continue With Google
+              </button>
             </div>
           </form>
         </div>
